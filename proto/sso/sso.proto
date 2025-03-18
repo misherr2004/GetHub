@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "tuzov.sso.v1;ssov1";
+
+service Auth { //методы сервиса
+	rpc Register (RegistrRequest) returns (RegistrResponse);
+	rpc Login (LoginRequest) returns (LoginResponse);
+	rpc IsAdmin (IsAdminRequest) returns (IsAdminResponse);
+
+}
+//создаем пользователя
+message RegistrRequest {
+	string email = 1;
+	string password = 2;
+}
+//получаем id пользователя
+message RegistrResponse {
+	int64 user_id = 1;
+}
+
+//логиним пользователя
+message LoginRequest {
+	string email = 1;
+	string password = 2;
+	int32 app_id = 3; //id приложения в которое человек логинится (1 раз логинишься - доступ в разные сервисы)
+}
+//получаем токен с помощью которого зайдем в сервис
+message LoginResponse {
+	string token = 1;
+}
+
+//кого проверяем на админа
+message IsAdminRequest {
+	int64 user_id = 1;
+}
+//ответ: админ или нет
+message IsAdminResponse {
+	bool is_admin = 1;
+}
